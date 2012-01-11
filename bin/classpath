@@ -1,0 +1,53 @@
+#! /bin/sh
+
+bin=`dirname $0`
+app=$bin/../
+
+echo "#!/bin/sh" > yaacs.sh
+echo "" >> yaacs.sh
+echo "separator=\";\"" >> yaacs.sh
+echo "if [ -z \`uname | grep -i cygwin\` ]; then" >> yaacs.sh
+echo "  separator=\":\"" >> yaacs.sh
+echo "fi" >> yaacs.sh
+echo "" >> yaacs.sh
+echo "bin=\`dirname \$0\`" >> yaacs.sh
+echo "app=\$bin/../" >> yaacs.sh
+echo "" >> yaacs.sh
+echo "classpath=\$CLASSPATH" >> yaacs.sh
+for f in `ls $app/lib/*.jar`; do
+  f=`basename $f`
+  echo "classpath=\"\$classpath\$separator\$app/lib/"$f"\"" >> yaacs.sh;
+done
+echo "classpath=\"\$classpath\$separator\$app/etc\"" >> yaacs.sh
+f=`ls $bin/yaacs-*.jar`
+f=`basename $f`
+echo "classpath=\"\$classpath\$separator\$app/bin/"$f"\"" >> yaacs.sh
+echo "" >> yaacs.sh
+echo "CLASSPATH=\"\$classpath\" java -Djava.library.path=\$app/lib com.honnix.yaacs.admin.lifecycle.LifeCycle" >> yaacs.sh
+echo "" >> yaacs.sh
+chmod +x yaacs.sh
+
+echo "#!/bin/sh" > httpclient.sh
+echo "" >> httpclient.sh
+echo "separator=\";\"" >> httpclient.sh
+echo "if [ -z \`uname | grep -i cygwin\` ]; then" >> httpclient.sh
+echo "  separator=\":\"" >> httpclient.sh
+echo "fi" >> httpclient.sh
+echo "" >> httpclient.sh
+echo "bin=\`dirname \$0\`" >> httpclient.sh
+echo "app=\$bin/../" >> httpclient.sh
+echo "" >> httpclient.sh
+echo "classpath=\$CLASSPATH" >> httpclient.sh
+for f in `ls $app/lib/*.jar`; do
+  f=`basename $f`
+  echo "classpath=\"\$classpath\$separator\$app/lib/"$f"\"" >> httpclient.sh;
+done
+echo "classpath=\"\$classpath\$separator\$app/etc\"" >> httpclient.sh
+f=`ls $bin/yaacs-*.jar`
+f=`basename $f`
+echo "classpath=\"\$classpath\$separator\$app/bin/"$f"\"" >> httpclient.sh
+echo "" >> httpclient.sh
+echo "CLASSPATH=\"\$classpath\" java com.honnix.yaacs.adapter.http.ui.ACHttpClientCli" >> httpclient.sh
+echo "" >> httpclient.sh
+chmod +x httpclient.sh
+
